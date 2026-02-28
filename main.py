@@ -50,12 +50,20 @@ def execute_python_code(code: str) -> dict:
 
 
 # =========================
-# ERROR LINE EXTRACTOR
+# CORRECT ERROR LINE EXTRACTOR
 # =========================
 def extract_line_number(traceback_str: str) -> List[int]:
-    match = re.search(r'line (\d+)', traceback_str)
-    if match:
-        return [int(match.group(1))]
+    """
+    Extract the line number from:
+    File "<string>", line X
+    which represents the user's executed code.
+    """
+
+    matches = re.findall(r'File "<string>", line (\d+)', traceback_str)
+
+    if matches:
+        return [int(matches[-1])]  # Use the last occurrence
+
     return []
 
 
